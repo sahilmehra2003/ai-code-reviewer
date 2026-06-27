@@ -60,6 +60,7 @@ export async function saveInstallation(userId: string, installationId: number) {
     },)
 }
 
+// remove from db
 export async function deleteInstallation(userId: string):Promise<void> {
     await prisma.githubInstallation.delete({ where: { userId } })
 }

@@ -32,28 +32,7 @@ type GithubConnectCardProps = {
 
 
 
-function ConnectedDetails({ accountLogin }: { accountLogin: string | null }) {
-    return (
-        <p className="text-xs text-muted-foreground">
-            Installed for{" "}
-            <span className="font-medium text-green-700 dark:text-green-400">
-                @{accountLogin}
-            </span>
-            . The app can read repository metadata and post review comments on pull
-            requests.
-        </p>
-    );
-}
 
-function DisconnectedDetails() {
-    return (
-        <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
-            <li>Access public and private repositories you select</li>
-            <li>Receive webhooks for pull request events</li>
-            <li>Post AI-generated review comments on PRs</li>
-        </ul>
-    );
-}
 
 function ConnectedActions() {
     return (
@@ -87,6 +66,29 @@ function DisconnectedActions({ installUrl }: { installUrl: string }) {
     );
 }
 
+
+function ConnectedDetails({ accountLogin }: { accountLogin: string | null }) {
+    return (
+        <p className="text-xs text-muted-foreground">
+            Installed for{" "}
+            <span className="font-medium text-green-700 dark:text-green-400">
+                @{accountLogin}
+            </span>
+            . The app can read repository metadata and post review comments on pull
+            requests.
+        </p>
+    );
+}
+
+function DisconnectedDetails() {
+    return (
+        <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
+            <li>Access public and private repositories you select</li>
+            <li>Receive webhooks for pull request events</li>
+            <li>Post AI-generated review comments on PRs</li>
+        </ul>
+    );
+}
 
 
 function ConnectionDetails({
