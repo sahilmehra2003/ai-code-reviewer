@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { chunkPrFiles } from "../utils/chunk-code";
 import { formatPrFilesForReview, getPullRequestFiles } from "./pr-files";
 import { generateReview } from "./generate-review";
+import { postPrComment } from "./post-pr-comment";
 
 export const reviewPullRequest=inngest.createFunction(
     {id:"review-pull-request",triggers:{event:"github/pr.received"}},
@@ -66,7 +67,8 @@ export const reviewPullRequest=inngest.createFunction(
         const review=await step.run("generate-ai-review",async()=>{
             return generateReview({
                 repoFullName:pullRequest.repoFullName,
-                title:pullRequest.title
+                title:pullRequest.title,
+                diff
             })
         })
         await step.run("post-pr-comment",async()=>{

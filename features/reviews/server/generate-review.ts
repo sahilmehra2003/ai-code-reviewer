@@ -1,8 +1,8 @@
-import {generateText} from "ai";
-import {openrouter} from "@/features/ai"
+import { generateText } from "ai";
+import { openrouter } from "@/features/ai"
 
-const REVIEW_MODEL="openrouter/free"
-const SYSTEM_PROMPT=`You are an expert code reviewer with deep knowledge of software engineering best practices, security, and performance optimization.
+const REVIEW_MODEL = "openrouter/free"
+const SYSTEM_PROMPT = `You are an expert code reviewer with deep knowledge of software engineering best practices, security, and performance optimization.
 
 Review the provided unified diff chunks and write a concise, actionable pull request review in markdown.
 
@@ -41,9 +41,10 @@ Then use this structure if there are findings:
 - If the diff looks clean with no concerns, say so clearly in 1–2 sentences — do not invent problems
 - Tailor feedback to the repository language and conventions visible in the diff`;
 
-type ReviewInput={
-    repoFullName:string
-    title:string
+type ReviewInput = {
+    repoFullName: string
+    title: string
+    diff: string;
 }
 
 function buildRepoContextSection(repoContextSnippets: string[]) {
@@ -60,12 +61,17 @@ function buildRepoContextSection(repoContextSnippets: string[]) {
   ${repoContext}`;
 }
 
-export async function generateReview(input:ReviewInput){
-    const {text}=await generateText({
-        model:openrouter(REVIEW_MODEL),
-        system:SYSTEM_PROMPT,
-        prompt:`Repository: ${input.repoFullName}
-        Pull request title: ${input.title}`
-    })
-    return text
+export async function generateReview(input: ReviewInput) {
+    const { text } = await generateText({
+        model: openrouter(REVIEW_MODEL),
+        system: SYSTEM_PROMPT,
+        prompt: `Repository: ${input.repoFullName}
+Pull request title: ${input.title}
+
+## Changed files (unified diff)
+
+${input.diff}${buildRepoContextSection([])}`,
+    });
+
+    return text;
 }
