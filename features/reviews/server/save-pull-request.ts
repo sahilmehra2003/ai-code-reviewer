@@ -14,7 +14,6 @@ function getAuthorLogin(
 export async function savePullRequest(payload: PullRequestWebhookPayload) {
     const repoFullName = payload.repository.full_name;
     const prNumber = payload.pull_request.number;
-    console.log("payload in save-pull-request: ",payload)
     //  if i add new coment then we want to overwrite the old comment
     const pull_request = await prisma.pullRequest.upsert({
         where: {
@@ -28,7 +27,7 @@ export async function savePullRequest(payload: PullRequestWebhookPayload) {
             authorLogin: getAuthorLogin(payload.pull_request.user),
             headSha: payload.pull_request.head.sha,
             baseBranch: payload.pull_request.base.ref,
-            status: "pending"
+            status: "pending",
         },
         update: {
             title: payload.pull_request.title,
